@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "title": "Hajoubi",
+    "description": "Boutique en ligne — mode et hijab"
+  },
+  "nav": {
+    "home": "Accueil",
+    "shop": "Articles",
+    "collections": "Collections",
+    "contact": "Contact",
+    "promotions": "Promotions"
+  },
+  "common": {
+    "search": "Rechercher un article…",
+    "noResults": "Aucun article trouvé",
+    "soldOut": "Épuisé",
+    "from": "À partir de",
+    "da": "DA",
+    "viewAll": "Voir tout",
+    "loading": "Chargement…"
+  },
+  "categories": {
+    "all": "Tout",
+    "JUPE": "Jupe",
+    "ENSEMBLE": "Ensemble",
+    "ROBE": "Robe",
+    "HIJAB": "Hijab",
+    "PANTALON": "Pantalon",
+    "VESTE": "Veste"
+  },
+  "home": {
+    "heroTitle": "Élégance au quotidien",
+    "heroSubtitle": "Découvrez nos pièces, commandées simplement depuis votre téléphone.",
+    "shopCta": "Voir les articles",
+    "promosTitle": "Promotions en cours",
+    "bestTitle": "Meilleurs articles",
+    "reviewsTitle": "Avis clientes",
+    "photosTitle": "Photos clientes",
+    "guideTitle": "Comment commander",
+    "guide1Title": "Parcourir",
+    "guide1Text": "Explorez les articles ou les collections et ouvrez la pièce qui vous plaît.",
+    "guide2Title": "Choisir taille et couleur",
+    "guide2Text": "Sélectionnez uniquement une combinaison encore en stock.",
+    "guide3Title": "Remplir le formulaire",
+    "guide3Text": "Indiquez votre nom, téléphone, wilaya, commune et le type de livraison.",
+    "guide4Title": "Confirmation",
+    "guide4Text": "Nous validons votre commande et vous contactons pour la livraison."
+  },
+  "shop": {
+    "title": "Tous les articles",
+    "filters": "Catégories"
+  },
+  "product": {
+    "color": "Couleur",
+    "size": "Taille",
+    "quantity": "Quantité",
+    "description": "Description",
+    "order": "Commander",
+    "ordering": "Envoi…",
+    "orderSuccess": "Commande envoyée. Merci, nous vous contactons bientôt.",
+    "selectVariant": "Choisissez une couleur et une taille disponibles."
+  },
+  "order": {
+    "title": "Vos informations",
+    "fullName": "Nom complet",
+    "phone": "Numéro de téléphone",
+    "wilaya": "Wilaya",
+    "commune": "Commune",
+    "chooseWilaya": "Choisir une wilaya",
+    "chooseCommune": "Choisir une commune",
+    "delivery": "Livraison",
+    "home": "À domicile",
+    "agency": "Au bureau / agence",
+    "subtotal": "Article",
+    "deliveryFee": "Livraison",
+    "total": "Total"
+  },
+  "collections": {
+    "title": "Collections",
+    "empty": "Aucune collection pour le moment.",
+    "products": "articles"
+  },
+  "contact": {
+    "title": "Contact",
+    "instagram": "Instagram",
+    "email": "Email",
+    "developer": "Développeur",
+    "developerName": "[Nom du développeur]",
+    "developerContact": "[Contact développeur]"
+  },
+  "footer": {
+    "rights": "Tous droits réservés"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "title": "حجوبي",
+    "description": "متجر إلكتروني — أزياء وحجاب"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "shop": "المنتجات",
+    "collections": "المجموعات",
+    "contact": "اتصل بنا",
+    "promotions": "العروض"
+  },
+  "common": {
+    "search": "ابحثي عن منتج…",
+    "noResults": "لا توجد منتجات",
+    "soldOut": "نفد المخزون",
+    "from": "ابتداءً من",
+    "da": "دج",
+    "viewAll": "عرض الكل",
+    "loading": "جاري التحميل…"
+  },
+  "categories": {
+    "all": "الكل",
+    "JUPE": "تنورة",
+    "ENSEMBLE": "طقم",
+    "ROBE": "فستان",
+    "HIJAB": "حجاب",
+    "PANTALON": "بنطلون",
+    "VESTE": "سترة"
+  },
+  "home": {
+    "heroTitle": "أناقة لكل يوم",
+    "heroSubtitle": "اكتشفي قطعنا واطلبي بسهولة من هاتفك.",
+    "shopCta": "تصفح المنتجات",
+    "promosTitle": "عروض جارية",
+    "bestTitle": "الأكثر مبيعاً",
+    "reviewsTitle": "آراء الزبونات",
+    "photosTitle": "صور الزبونات",
+    "guideTitle": "كيف تطلبين",
+    "guide1Title": "تصفحي",
+    "guide1Text": "استكشفي المنتجات أو المجموعات وافتحي القطعة التي تعجبك.",
+    "guide2Title": "اختاري المقاس واللون",
+    "guide2Text": "اختاري فقط التوليفة المتوفرة في المخزون.",
+    "guide3Title": "املئي الاستمارة",
+    "guide3Text": "أدخلي الاسم، الهاتف، الولاية، البلدية ونوع التوصيل.",
+    "guide4Title": "التأكيد",
+    "guide4Text": "نؤكد طلبك ونتواصل معك للتوصيل."
+  },
+  "shop": {
+    "title": "كل المنتجات",
+    "filters": "التصنيفات"
+  },
+  "product": {
+    "color": "اللون",
+    "size": "المقاس",
+    "quantity": "الكمية",
+    "description": "الوصف",
+    "order": "اطلبي",
+    "ordering": "جاري الإرسال…",
+    "orderSuccess": "تم إرسال الطلب. شكراً، سنتواصل معك قريباً.",
+    "selectVariant": "اختاري لوناً ومقاساً متوفرين."
+  },
+  "order": {
+    "title": "معلوماتك",
+    "fullName": "الاسم الكامل",
+    "phone": "رقم الهاتف",
+    "wilaya": "الولاية",
+    "commune": "البلدية",
+    "chooseWilaya": "اختاري الولاية",
+    "chooseCommune": "اختاري البلدية",
+    "delivery": "التوصيل",
+    "home": "إلى المنزل",
+    "agency": "إلى المكتب / الوكالة",
+    "subtotal": "المنتج",
+    "deliveryFee": "التوصيل",
+    "total": "المجموع"
+  },
+  "collections": {
+    "title": "المجموعات",
+    "empty": "لا توجد مجموعات حالياً.",
+    "products": "منتجات"
+  },
+  "contact": {
+    "title": "اتصل بنا",
+    "instagram": "إنستغرام",
+    "email": "البريد الإلكتروني",
+    "developer": "المطور",
+    "developerName": "[اسم المطور]",
+    "developerContact": "[جهة اتصال المطور]"
+  },
+  "footer": {
+    "rights": "جميع الحقوق محفوظة"
+  }
+}
