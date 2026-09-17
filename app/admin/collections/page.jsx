@@ -24,18 +24,18 @@ export default async function AdminCollectionsPage() {
   const serialized = JSON.parse(JSON.stringify(collections));
 
   return (
-    <div className="min-h-screen bg-gray-50/50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FAFAFA] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-6">
-        <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-white rounded-xl p-5 shadow-xs border border-gray-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Link href="/admin" className="text-xs text-gray-500 hover:text-gray-900 transition">
+              <Link href="/admin" className="text-xs text-gray-500 hover:text-[#8B7CD8] transition">
                 ← Dashboard
               </Link>
               <span className="text-gray-300">•</span>
-              <span className="text-xs font-semibold text-gray-700">Collections</span>
+              <span className="text-xs font-semibold text-[#6555B6]">Collections</span>
               <span className="text-gray-300">•</span>
-              <Link href="/admin/products" className="text-xs text-gray-500 hover:text-gray-900 transition">
+              <Link href="/admin/products" className="text-xs text-gray-500 hover:text-[#8B7CD8] transition">
                 Products
               </Link>
             </div>
@@ -46,7 +46,7 @@ export default async function AdminCollectionsPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/admin/collections/new"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-black rounded-lg hover:bg-gray-800 transition"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-[#8B7CD8] hover:bg-[#7A6BC7] rounded-lg shadow-xs transition"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />

@@ -58,14 +58,22 @@ function RatingStars({ rating = 0 }) {
 
 function StatusBadge({ approved }) {
   return approved ? (
-    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-700 border-emerald-200">
+    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-[#8B7CD8]/10 text-[#6555B6] border-[#8B7CD8]/25">
       Approved
     </span>
   ) : (
-    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-amber-50 text-amber-700 border-amber-200">
+    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200">
       Pending
     </span>
   );
+}
+
+function extractInstagramUsername(url) {
+  const match = String(url || "").match(/instagram\.com\/(?:stories\/)?([a-zA-Z0-9_.]+)/i);
+  if (!match) return null;
+  const skip = new Set(["p", "reel", "reels", "share", "stories", "explore", "accounts"]);
+  if (skip.has(match[1].toLowerCase())) return null;
+  return match[1];
 }
 
 export default function FeedbackManager({ initialFeedbacks = [], products = [] }) {
@@ -98,6 +106,19 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
   }, [feedbacks]);
 
   const updateForm = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
+
+  const updateStoryLink = (value) => {
+    const username = extractInstagramUsername(value);
+    setForm((prev) => {
+      const next = { ...prev, storyLink: value };
+      if (username) {
+        const autoName = `@${username}`;
+        const wasAuto = !prev.clientName.trim() || prev.clientName.startsWith("@");
+        if (wasAuto) next.clientName = autoName;
+      }
+      return next;
+    });
+  };
 
   const handlePhotoUpload = async (event) => {
     const selectedFiles = Array.from(event.target.files || []);
@@ -245,12 +266,12 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200/80 shadow-xs overflow-hidden">
         <div className="flex items-center justify-end gap-4 px-5 py-4 border-b border-gray-100">
           <button
             type="button"
             onClick={() => setShowModal(true)}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-black rounded-lg hover:bg-gray-800 transition"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-[#8B7CD8] hover:bg-[#7A6BC7] rounded-lg shadow-xs transition"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -260,13 +281,13 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
         </div>
 
         {allVisibleFeedbacks.length === 0 ? (
-          <div className="p-10 text-center text-gray-500 text-sm">
+          <div className="p-10 text-center text-gray-400 text-sm">
             No feedback yet. Add one to get started.
           </div>
         ) : (
           <div className="grid gap-4 p-5">
             {allVisibleFeedbacks.map((feedback) => (
-              <div key={feedback.id} className="rounded-xl border border-gray-200 bg-gray-50/40 p-4">
+              <div key={feedback.id} className="rounded-xl border border-gray-200/80 bg-white p-4 hover:border-gray-300 transition">
                 <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-3">
                   <div className="space-y-3 flex-1">
                     <div className="flex items-center justify-between gap-3 flex-wrap">
@@ -292,7 +313,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                         value={feedback.productId || ""}
                         onChange={(event) => updateProductForFeedback(feedback.id, event.target.value || null)}
                         disabled={changingProductId === feedback.id}
-                        className="px-2.5 py-1.5 rounded-lg border border-gray-200 bg-white text-xs font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-400 transition disabled:opacity-50"
+                        className="px-2.5 py-1.5 rounded-lg border border-gray-200 bg-white text-xs font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition disabled:opacity-50"
                       >
                         <option value="">Not linked</option>
                         {products.map((product) => (
@@ -304,7 +325,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                       {feedback.product && (
                         <Link
                           href={`/admin/products/${feedback.product.id}/edit`}
-                          className="text-xs text-gray-500 hover:text-gray-900 underline transition"
+                          className="text-xs text-[#8B7CD8] hover:underline transition"
                         >
                           view →
                         </Link>
@@ -318,7 +339,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                         defaultValue={feedback.storyLink || ""}
                         placeholder="https://…"
                         onBlur={(event) => updateStoryLinkForFeedback(feedback, event.target.value)}
-                        className="min-w-[220px] flex-1 px-2.5 py-1.5 rounded-lg border border-gray-200 bg-white text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-400 transition"
+                        className="min-w-[220px] flex-1 px-2.5 py-1.5 rounded-lg border border-gray-200 bg-white text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
                       />
                     </div>
 
@@ -331,7 +352,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                               href={feedback.storyLink}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
+                              className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xs"
                             >
                               <img src={photo} alt="Feedback preview" className="w-16 h-16 object-cover hover:scale-[1.02] transition" />
                             </a>
@@ -340,7 +361,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                               key={photo}
                               type="button"
                               onClick={() => setExpandedPhoto(photo)}
-                              className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
+                              className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xs"
                             >
                               <img src={photo} alt="Feedback preview" className="w-16 h-16 object-cover hover:scale-[1.02] transition" />
                             </button>
@@ -357,7 +378,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                       disabled={togglingId === feedback.id}
                       className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
                         feedback.approved
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
+                          ? "bg-[#8B7CD8]/10 text-[#6555B6] border-[#8B7CD8]/25 hover:bg-[#8B7CD8]/20"
                           : "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200"
                       } disabled:opacity-60`}
                     >
@@ -381,11 +402,11 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
               <h3 className="text-lg font-semibold text-gray-900">Add Feedback</h3>
-              <button type="button" onClick={() => setShowModal(false)} className="text-gray-500 hover:text-gray-900 text-xl">×</button>
+              <button type="button" onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-700 text-xl font-bold">×</button>
             </div>
 
             <div className="space-y-5 p-5">
@@ -396,7 +417,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                     type="text"
                     value={form.clientName}
                     onChange={(event) => updateForm("clientName", event.target.value)}
-                    className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-400 transition"
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
                   />
                 </div>
 
@@ -405,7 +426,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                   <select
                     value={form.rating}
                     onChange={(event) => updateForm("rating", Number(event.target.value))}
-                    className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-400 transition"
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
                   >
                     {[5, 4, 3, 2, 1].map((value) => (
                       <option key={value} value={value}>{value} / 5</option>
@@ -425,14 +446,14 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                     placeholder="Search products…"
                     value={productSearch}
                     onChange={(event) => setProductSearch(event.target.value)}
-                    className="w-full rounded-lg border border-gray-200 pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-400 transition"
+                    className="w-full rounded-lg border border-gray-200 pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
                   />
                 </div>
 
                 <select
                   value={form.productId}
                   onChange={(event) => updateForm("productId", event.target.value)}
-                  className="mt-2 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-400 transition"
+                  className="mt-2 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
                 >
                   <option value="">No product linked</option>
                   {filteredProducts.map((product) => (
@@ -447,7 +468,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                   rows={5}
                   value={form.message}
                   onChange={(event) => updateForm("message", event.target.value)}
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-400 transition"
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
                 />
               </div>
 
@@ -456,9 +477,9 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                 <input
                   type="text"
                   value={form.storyLink}
-                  onChange={(event) => updateForm("storyLink", event.target.value)}
+                  onChange={(event) => updateStoryLink(event.target.value)}
                   placeholder="https://…"
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-400 transition"
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
                 />
               </div>
 
@@ -481,7 +502,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                   type="checkbox"
                   checked={form.approved}
                   onChange={(event) => updateForm("approved", event.target.checked)}
-                  className="rounded border-gray-300 text-black focus:ring-black"
+                  className="rounded border-gray-300 text-[#8B7CD8] focus:ring-[#8B7CD8]"
                 />
                 Approved immediately
               </label>
@@ -495,7 +516,7 @@ export default function FeedbackManager({ initialFeedbacks = [], products = [] }
                 type="button"
                 onClick={handleAddFeedback}
                 disabled={saving}
-                className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-black hover:bg-gray-800 transition disabled:opacity-60"
+                className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-[#8B7CD8] hover:bg-[#7A6BC7] transition shadow-xs disabled:opacity-60"
               >
                 {saving ? "Saving…" : "Save Feedback"}
               </button>

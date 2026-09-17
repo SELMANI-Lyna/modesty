@@ -86,19 +86,6 @@ export async function PATCH(req, { params }) {
     // Check if order exists
     const existing = await prisma.order.findUnique({
       where: { id },
-      select: { id: true, status: true },
-    });
-
-    if (!existing) {
-      return NextResponse.json({ error: "Order not found" }, { status: 404 });
-    }
-
-    // Update only the order status - NO stock / Variant.quantity manipulation
-    const updatedOrder = await prisma.order.update({
-      where: { id },
-      data: {
-        status: normalizedStatus,
-      },
       include: {
         items: {
           include: {
@@ -110,6 +97,65 @@ export async function PATCH(req, { params }) {
           },
         },
       },
+    });
+
+    if (!existing) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
+
+    const isTransitionToReturned = normalizedStatus === "returned" && existing.status !== "returned";
+    const isTransitionFromReturned = existing.status === "returned" && normalizedStatus !== "returned";
+
+    const updatedOrder = await prisma.$transaction(async (tx) => {
+      if (isTransitionToReturned) {
+        for (const item of existing.items) {
+          if (item.variant) {
+            const updatedVar = await tx.variant.update({
+              where: { id: item.variant.id },
+              data: {
+                quantity: { increment: item.quantity },
+              },
+              include: { product: true },
+            });
+            const LOW_STOCK_THRESHOLD = 2;
+            if (updatedVar.quantity > LOW_STOCK_THRESHOLD && updatedVar.lowStockAlertSent) {
+              await tx.variant.update({
+                where: { id: updatedVar.id },
+                data: { lowStockAlertSent: false },
+              });
+            }
+          }
+        }
+      } else if (isTransitionFromReturned) {
+        for (const item of existing.items) {
+          if (item.variant) {
+            await tx.variant.update({
+              where: { id: item.variant.id },
+              data: {
+                quantity: { decrement: item.quantity },
+              },
+            });
+          }
+        }
+      }
+
+      return await tx.order.update({
+        where: { id },
+        data: {
+          status: normalizedStatus,
+        },
+        include: {
+          items: {
+            include: {
+              variant: {
+                include: {
+                  product: true,
+                },
+              },
+            },
+          },
+        },
+      });
     });
 
     console.log(

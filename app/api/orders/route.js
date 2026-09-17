@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/lib/prisma";
 import { getDeliveryFee } from "@/lib/delivery";
 import { getProductUnitPrice } from "@/lib/pricing";
+import { sendLowStockEmail } from "@/app/lib/email";
 
 export async function POST(req) {
   let body;
@@ -43,7 +44,7 @@ export async function POST(req) {
   }
 
   try {
-    const order = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx) => {
       const variant = await tx.variant.findUnique({
         where: { id: variantId },
         include: { product: true },
@@ -79,15 +80,40 @@ export async function POST(req) {
         },
       });
 
-      await tx.variant.update({
+      const updatedVariant = await tx.variant.update({
         where: { id: variant.id },
         data: { quantity: { decrement: qty } },
+        include: { product: true },
       });
 
-      return created;
+      const LOW_STOCK_THRESHOLD = 2;
+      const newQuantity = updatedVariant.quantity;
+      let shouldSendEmail = false;
+
+      console.log(`[Order Stock Check] Variant ID: ${variant.id}, Prev AlertSent: ${variant.lowStockAlertSent}, New Qty: ${newQuantity}, Threshold: ${LOW_STOCK_THRESHOLD}`);
+
+      if (newQuantity <= LOW_STOCK_THRESHOLD && newQuantity > 0 && !variant.lowStockAlertSent) {
+        await tx.variant.update({
+          where: { id: variant.id },
+          data: { lowStockAlertSent: true },
+        });
+        shouldSendEmail = true;
+      }
+
+      return { created, updatedVariant, newQuantity, shouldSendEmail };
     });
 
-    return NextResponse.json({ id: order.id, totalPrice: order.totalPrice }, { status: 201 });
+    console.log(`[Order Stock Check] shouldSendEmail: ${result.shouldSendEmail}`);
+
+    if (result.shouldSendEmail) {
+      try {
+        await sendLowStockEmail(result.updatedVariant.product, result.updatedVariant, result.newQuantity);
+      } catch (emailError) {
+        console.error("[LowStockEmail Error]", emailError);
+      }
+    }
+
+    return NextResponse.json({ id: result.created.id, totalPrice: result.created.totalPrice }, { status: 201 });
   } catch (error) {
     if (error.message === "OUT_OF_STOCK") {
       return NextResponse.json({ error: "Stock insuffisant pour cette variante." }, { status: 409 });
@@ -99,3 +125,4 @@ export async function POST(req) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+

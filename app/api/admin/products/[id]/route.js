@@ -153,7 +153,9 @@ export async function PUT(req, { params }) {
       }
 
       // 4. Update existing variants and create new ones
+      const LOW_STOCK_THRESHOLD = 2;
       for (const v of variants) {
+        const qty = parseInt(v.quantity, 10);
         const variantData = {
           size: v.size,
           colorName: v.colorName,
@@ -161,10 +163,14 @@ export async function PUT(req, { params }) {
           image: v.image || null,
           price: v.price ? parseFloat(v.price) : null,
           reducedPrice: v.reducedPrice ? parseFloat(v.reducedPrice) : null,
-          quantity: parseInt(v.quantity, 10),
+          quantity: qty,
           sku: v.sku?.trim() || null,
           isActive: v.isActive !== false,
         };
+
+        if (qty > LOW_STOCK_THRESHOLD) {
+          variantData.lowStockAlertSent = false;
+        }
 
         if (v._id && existingVariantMap.has(v._id)) {
           await tx.variant.update({

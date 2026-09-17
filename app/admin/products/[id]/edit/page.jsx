@@ -10,13 +10,13 @@ export default async function Page({ params }) {
   });
 
   if (!product) {
-    return <div className="p-6">Product not found</div>;
+    return (
+      <div className="min-h-screen bg-[#FAFAFA] flex items-center justify-center p-6 text-gray-500 text-sm">
+        Produit introuvable
+      </div>
+    );
   }
 
-  return (
-    <div className="p-6">
-      {/* Pass the product as initial to the client wrapper */}
-      <EditProductClient initial={product} />
-    </div>
-  );
+  return <EditProductClient initial={product} />;
 }
+

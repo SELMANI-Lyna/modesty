@@ -105,24 +105,24 @@ export default function PromotionsManager({ initialPromos = [], allProducts = []
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200/80 shadow-xs overflow-hidden">
         <div className="flex items-center justify-end gap-4 px-5 py-4 border-b border-gray-100">
           <button
             type="button"
             onClick={() => setShowModal(true)}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-black rounded-lg hover:bg-gray-800 transition"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-[#8B7CD8] hover:bg-[#7A6BC7] rounded-lg shadow-xs transition"
           >
             Ajouter un produit en promo
           </button>
         </div>
 
         {promos.length === 0 ? (
-          <div className="p-10 text-center text-gray-500 text-sm">Aucun produit en promotion pour le moment.</div>
+          <div className="p-10 text-center text-gray-400 text-sm">Aucun produit en promotion pour le moment.</div>
         ) : (
           <div className="divide-y divide-gray-100">
             {promos.map((product) => (
-              <div key={product.id} className="flex items-center gap-4 p-4">
-                <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
+              <div key={product.id} className="flex items-center gap-4 p-4 hover:bg-gray-50/50 transition">
+                <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 border border-gray-200/80 flex-shrink-0">
                   {product.images?.[0] ? (
                     <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
                   ) : (
@@ -148,7 +148,7 @@ export default function PromotionsManager({ initialPromos = [], allProducts = []
                           }
                           if (e.key === "Escape") setEditingId(null);
                         }}
-                        className="w-28 rounded border border-gray-300 px-2 py-1 text-sm"
+                        className="w-28 rounded-lg border border-[#8B7CD8] px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20"
                       />
                     ) : (
                       <button
@@ -157,7 +157,7 @@ export default function PromotionsManager({ initialPromos = [], allProducts = []
                           setEditingId(product.id);
                           setDraftPrice(String(product.salePrice ?? ""));
                         }}
-                        className="font-semibold text-emerald-700 hover:underline"
+                        className="font-semibold text-[#6555B6] hover:underline"
                         title="Cliquer pour modifier"
                       >
                         {formatPrice(product.salePrice)}
@@ -180,11 +180,11 @@ export default function PromotionsManager({ initialPromos = [], allProducts = []
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-2xl w-full max-w-lg">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xl w-full max-w-lg">
             <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
               <h3 className="text-lg font-semibold text-gray-900">Ajouter un produit en promo</h3>
-              <button type="button" onClick={() => setShowModal(false)} className="text-gray-500 hover:text-gray-900 text-xl">
+              <button type="button" onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-700 text-xl font-bold">
                 ×
               </button>
             </div>
@@ -196,12 +196,12 @@ export default function PromotionsManager({ initialPromos = [], allProducts = []
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Nom du produit…"
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm"
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
                 />
                 <select
                   value={productId}
                   onChange={(e) => setProductId(e.target.value)}
-                  className="mt-2 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm"
+                  className="mt-2 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
                 >
                   <option value="">Choisir…</option>
                   {filteredProducts.map((product) => (
@@ -211,7 +211,7 @@ export default function PromotionsManager({ initialPromos = [], allProducts = []
                   ))}
                 </select>
                 {selectedProduct?.images?.[0] && (
-                  <img src={selectedProduct.images[0]} alt="" className="mt-3 w-24 h-24 object-cover rounded-lg border" />
+                  <img src={selectedProduct.images[0]} alt="" className="mt-3 w-24 h-24 object-cover rounded-lg border border-gray-200" />
                 )}
               </div>
               <div>
@@ -222,7 +222,7 @@ export default function PromotionsManager({ initialPromos = [], allProducts = []
                   step="1"
                   value={salePrice}
                   onChange={(e) => setSalePrice(e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm"
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
                 />
                 {selectedProduct && (
                   <p className="text-xs text-gray-500 mt-1">Prix actuel : {formatPrice(selectedProduct.price)}</p>
@@ -230,14 +230,14 @@ export default function PromotionsManager({ initialPromos = [], allProducts = []
               </div>
             </div>
             <div className="flex items-center justify-end gap-3 border-t border-gray-100 px-5 py-4">
-              <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg">
+              <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
                 Annuler
               </button>
               <button
                 type="button"
                 onClick={addPromo}
                 disabled={saving}
-                className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-black hover:bg-gray-800 disabled:opacity-60"
+                className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-[#8B7CD8] hover:bg-[#7A6BC7] transition shadow-xs disabled:opacity-60"
               >
                 {saving ? "Enregistrement…" : "Activer la promo"}
               </button>

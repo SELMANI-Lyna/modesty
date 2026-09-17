@@ -44,13 +44,13 @@ function LoginForm() {
   };
 
   return (
-    <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+    <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.04)] border border-gray-200/80">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
-          Admin Portal
+          Portail Admin
         </h2>
         <p className="mt-2 text-sm text-gray-600">
-          Sign in to access your dashboard
+          Connectez-vous pour accéder à votre tableau de bord
         </p>
       </div>
 
@@ -70,7 +70,7 @@ function LoginForm() {
               htmlFor="email"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Email Address
+              Adresse e-mail
             </label>
             <input
               id="email"
@@ -81,7 +81,7 @@ function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@example.com"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black text-sm text-gray-900"
+              className="w-full px-3 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] text-sm text-gray-900 placeholder-gray-400 transition"
               disabled={loading}
             />
           </div>
@@ -91,7 +91,7 @@ function LoginForm() {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Password
+              Mot de passe
             </label>
             <input
               id="password"
@@ -102,7 +102,7 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black text-sm text-gray-900"
+              className="w-full px-3 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] text-sm text-gray-900 placeholder-gray-400 transition"
               disabled={loading}
             />
           </div>
@@ -111,9 +111,9 @@ function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition"
+          className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg text-sm font-semibold text-white bg-[#8B7CD8] hover:bg-[#7A6BC7] active:bg-[#6555B6] focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/30 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-xs"
         >
-          {loading ? "Signing in..." : "Sign In"}
+          {loading ? "Connexion en cours..." : "Se connecter"}
         </button>
       </form>
     </div>
@@ -122,7 +122,7 @@ function LoginForm() {
 
 export default function AdminLoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] px-4 py-12">
       <Suspense
         fallback={
           <div className="max-w-md w-full p-8 text-center text-gray-500">

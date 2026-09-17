@@ -7,33 +7,33 @@ import { useRouter } from "next/navigation";
 const STATUS_CONFIG = {
   pending: {
     label: "Pending",
-    badgeClass: "bg-amber-50 text-amber-800 border-amber-300",
-    dotClass: "bg-amber-500",
+    badgeClass: "bg-gray-100 text-gray-700 border-gray-200",
+    dotClass: "bg-gray-400",
   },
   confirmed: {
     label: "Confirmed",
-    badgeClass: "bg-blue-50 text-blue-800 border-blue-300",
-    dotClass: "bg-blue-500",
+    badgeClass: "bg-[#8B7CD8]/10 text-[#6555B6] border-[#8B7CD8]/30",
+    dotClass: "bg-[#8B7CD8]",
   },
   shipped: {
     label: "Shipped",
-    badgeClass: "bg-indigo-50 text-indigo-800 border-indigo-300",
-    dotClass: "bg-indigo-500",
+    badgeClass: "bg-[#8B7CD8]/15 text-[#5B4CAE] border-[#8B7CD8]/40",
+    dotClass: "bg-[#7A6BC7]",
   },
   delivered: {
     label: "Delivered",
-    badgeClass: "bg-emerald-50 text-emerald-800 border-emerald-300",
-    dotClass: "bg-emerald-500",
+    badgeClass: "bg-[#8B7CD8]/25 text-[#4D3F9E] border-[#8B7CD8]/50",
+    dotClass: "bg-[#6555B6]",
   },
   returned: {
     label: "Returned",
-    badgeClass: "bg-orange-50 text-orange-800 border-orange-300",
-    dotClass: "bg-orange-500",
+    badgeClass: "bg-gray-100 text-gray-600 border-gray-300",
+    dotClass: "bg-gray-500",
   },
   cancelled: {
     label: "Cancelled",
-    badgeClass: "bg-red-50 text-red-800 border-red-300",
-    dotClass: "bg-red-500",
+    badgeClass: "bg-red-50 text-red-700 border-red-200",
+    dotClass: "bg-red-400",
   },
 };
 
@@ -122,12 +122,12 @@ export default function OrderDetailClient({ initialOrder }) {
       )}
 
       {/* Header Bar */}
-      <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white rounded-xl p-6 border border-gray-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Link
               href="/admin/orders"
-              className="text-xs text-gray-500 hover:text-gray-900 transition flex items-center gap-1 font-medium"
+              className="text-xs text-gray-500 hover:text-[#8B7CD8] transition flex items-center gap-1 font-medium"
             >
               <span>← Back to all orders</span>
             </Link>
@@ -158,7 +158,7 @@ export default function OrderDetailClient({ initialOrder }) {
               value={order.status}
               onChange={(e) => handleStatusChange(e.target.value)}
               disabled={updating}
-              className={`text-xs font-semibold py-2 pl-3 pr-8 rounded-lg border focus:outline-none focus:ring-2 cursor-pointer transition ${statusInfo.badgeClass} ${
+              className={`text-xs font-semibold py-2 pl-3 pr-8 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/30 focus:border-[#8B7CD8] cursor-pointer transition ${statusInfo.badgeClass} ${
                 updating ? "opacity-50 cursor-wait" : ""
               }`}
             >
@@ -191,7 +191,7 @@ export default function OrderDetailClient({ initialOrder }) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left 2 Cols: Ordered Items Breakdown */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-xs">
+          <div className="bg-white rounded-xl border border-gray-200/80 overflow-hidden shadow-xs">
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider">
                 Order Items ({order.items?.length || 0})
@@ -214,7 +214,7 @@ export default function OrderDetailClient({ initialOrder }) {
                 return (
                   <div key={item.id} className="p-4 flex items-start gap-4 hover:bg-gray-50/50 transition">
                     {/* Thumbnail */}
-                    <div className="w-16 h-16 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-lg bg-gray-100 border border-gray-200/80 overflow-hidden shrink-0 flex items-center justify-center">
                       {imageSrc ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -288,7 +288,7 @@ export default function OrderDetailClient({ initialOrder }) {
 
         {/* Right Col: Client & Delivery Information */}
         <div className="space-y-6">
-          <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-xs space-y-4">
+          <div className="bg-white rounded-xl border border-gray-200/80 p-5 shadow-xs space-y-4">
             <h2 className="text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">
               Customer Information
             </h2>
@@ -309,7 +309,7 @@ export default function OrderDetailClient({ initialOrder }) {
               <div className="flex items-center gap-2 mt-0.5">
                 <a
                   href={`tel:${order.phone}`}
-                  className="font-mono text-sm text-blue-600 hover:underline font-semibold"
+                  className="font-mono text-sm text-[#8B7CD8] hover:underline font-semibold"
                 >
                   {order.phone}
                 </a>
@@ -337,20 +337,20 @@ export default function OrderDetailClient({ initialOrder }) {
                 Delivery Preference
               </span>
               {order.deliveryType === "home" ? (
-                <div className="p-3 rounded-lg bg-purple-50 border border-purple-200 text-xs">
-                  <div className="font-semibold text-purple-900 flex items-center gap-1.5">
+                <div className="p-3 rounded-lg bg-[#8B7CD8]/10 border border-[#8B7CD8]/25 text-xs">
+                  <div className="font-semibold text-[#6555B6] flex items-center gap-1.5">
                     <span>🏠 Home Delivery</span>
                   </div>
-                  <p className="text-purple-700 text-[11px] mt-0.5">
+                  <p className="text-[#6555B6]/80 text-[11px] mt-0.5">
                     Delivered directly to the customer&apos;s doorstep.
                   </p>
                 </div>
               ) : (
-                <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs">
-                  <div className="font-semibold text-amber-900 flex items-center gap-1.5">
+                <div className="p-3 rounded-lg bg-gray-50 border border-gray-200 text-xs">
+                  <div className="font-semibold text-gray-800 flex items-center gap-1.5">
                     <span>🏢 Stop Desk / Agency Pickup</span>
                   </div>
-                  <p className="text-amber-700 text-[11px] mt-0.5">
+                  <p className="text-gray-600 text-[11px] mt-0.5">
                     Customer collects parcel from the courier branch office.
                   </p>
                 </div>

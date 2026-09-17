@@ -35,39 +35,33 @@ export default async function AdminOrdersPage() {
   const serializedOrders = JSON.parse(JSON.stringify(orders));
 
   return (
-    <div className="min-h-screen bg-gray-50/50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FAFAFA] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Top Navigation & Header */}
-        <div className="bg-white rounded-xl p-5 shadow-xs border border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Link
-                href="/admin"
-                className="text-xs text-gray-500 hover:text-gray-900 transition flex items-center gap-1"
-              >
-                <span>← Dashboard</span>
+            <div className="flex items-center gap-2 mb-1 text-xs text-gray-500">
+              <Link href="/admin" className="hover:text-gray-900 transition">
+                Tableau de bord
               </Link>
-              <span className="text-gray-300">•</span>
-              <span className="text-xs font-semibold text-gray-700">Orders</span>
-              <span className="text-gray-300">•</span>
-              <Link
-                href="/admin/products"
-                className="text-xs text-gray-500 hover:text-gray-900 transition"
-              >
-                Products
+              <span>•</span>
+              <span className="font-semibold text-[#6555B6]">Commandes</span>
+              <span>•</span>
+              <Link href="/admin/products" className="hover:text-gray-900 transition">
+                Produits
               </Link>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-              Customer Orders
+              Commandes clients
             </h1>
             <p className="text-xs text-gray-500 mt-0.5">
-              Review incoming client orders, update delivery statuses, and inspect ordered variants.
+              Consultez les commandes, modifiez les statuts d'expédition et accédez aux détails
             </p>
           </div>
 
           <div className="flex items-center gap-3">
             <div className="text-right hidden md:block">
-              <span className="text-xs text-gray-500 block">Logged in as</span>
+              <span className="text-[11px] text-gray-400 block">Connecté en tant que</span>
               <span className="text-xs font-semibold text-gray-900 font-mono">
                 {session.user?.email}
               </span>
@@ -82,3 +76,4 @@ export default async function AdminOrdersPage() {
     </div>
   );
 }
+

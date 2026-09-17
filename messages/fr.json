@@ -17,7 +17,8 @@
     "from": "À partir de",
     "da": "DA",
     "viewAll": "Voir tout",
-    "loading": "Chargement…"
+    "loading": "Chargement…",
+    "discount": "-{percent}%"
   },
   "categories": {
     "all": "Tout",
@@ -32,10 +33,20 @@
     "heroTitle": "Élégance au quotidien",
     "heroSubtitle": "Découvrez nos pièces, commandées simplement depuis votre téléphone.",
     "shopCta": "Voir les articles",
+    "browseCategories": "Parcourir par catégorie",
     "promosTitle": "Promotions en cours",
     "bestTitle": "Meilleurs articles",
     "reviewsTitle": "Avis clientes",
+    "reviewsHeading": "Ce que disent nos clientes",
     "photosTitle": "Photos clientes",
+    "trustShippingTitle": "Livraison rapide",
+    "trustShippingText": "Vos commandes livrées partout en Algérie",
+    "trustPaymentTitle": "Paiement sûr et flexible",
+    "trustPaymentText": "Paiement à la livraison ou via CCP",
+    "trustOrdersTitle": "1000+ commandes",
+    "trustOrdersText": "La confiance de nos clientes",
+    "trustSatisfactionTitle": "Votre satisfaction",
+    "trustSatisfactionText": "Échange possible selon la politique du magasin",
     "guideTitle": "Comment commander",
     "guide1Title": "Parcourir",
     "guide1Text": "Explorez les articles ou les collections et ouvrez la pièce qui vous plaît.",
@@ -58,7 +69,8 @@
     "order": "Commander",
     "ordering": "Envoi…",
     "orderSuccess": "Commande envoyée. Merci, nous vous contactons bientôt.",
-    "selectVariant": "Choisissez une couleur et une taille disponibles."
+    "selectVariant": "Choisissez une couleur et une taille disponibles.",
+    "lowStock": "Il ne reste que {quantity} pièce(s)"
   },
   "order": {
     "title": "Vos informations",

@@ -99,44 +99,59 @@ export default function ImageUploader({ images = [], onChange, folder = "shop-pr
     onChange(next);
   };
 
-  return (
-    <div>
-      {/* Thumbnail grid */}
-      {images.length > 0 && (
-        <div className="flex flex-wrap gap-3 mb-3">
-          {images.map((url, i) => (
-            <div key={url + i} className="relative group w-24 h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={url}
-                alt={`Product image ${i + 1}`}
-                className="w-full h-full object-cover"
-              />
-              <button
-                type="button"
-                onClick={() => handleRemove(i)}
-                className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-lg font-bold"
-                aria-label="Remove image"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+  const [isDragging, setIsDragging] = useState(false);
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files) {
+      handleFiles(e.dataTransfer.files);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
       {/* Upload area */}
       <div
-        className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-gray-400 transition"
+        className={`relative border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200 ${
+          isDragging
+            ? "border-[#8B7CD8] bg-[#8B7CD8]/5 scale-[1.005]"
+            : "border-gray-200/90 hover:border-[#8B7CD8]/60 bg-gray-50/40 hover:bg-gray-50/80"
+        }`}
         onClick={() => inputRef.current?.click()}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
       >
         {uploading ? (
-          <p className="text-sm text-gray-500 animate-pulse">Uploading…</p>
+          <div className="py-2 flex flex-col items-center justify-center gap-2">
+            <div className="w-8 h-8 rounded-full border-2 border-[#8B7CD8] border-t-transparent animate-spin" />
+            <p className="text-sm font-medium text-[#6555B6]">Téléversement en cours…</p>
+            <p className="text-xs text-gray-400">Optimisation et enregistrement sur Cloudinary</p>
+          </div>
         ) : (
-          <>
-            <p className="text-sm text-gray-500">Click to upload images</p>
-            <p className="text-xs text-gray-400 mt-1">PNG, JPG, WEBP — max 10 MB each</p>
-          </>
+          <div className="flex flex-col items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-[#8B7CD8]/10 text-[#6555B6] flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <p className="text-sm font-medium text-gray-800">
+              <span className="text-[#6555B6] hover:underline font-semibold">Cliquez pour importer</span> ou glissez-déposez
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              PNG, JPG, WEBP • Max 10 Mo par photo
+            </p>
+          </div>
         )}
       </div>
 
@@ -151,7 +166,53 @@ export default function ImageUploader({ images = [], onChange, folder = "shop-pr
       />
 
       {uploadError && (
-        <p className="mt-2 text-sm text-red-600">{uploadError}</p>
+        <div className="p-3 text-xs text-red-700 bg-red-50 border border-red-200/80 rounded-lg flex items-center gap-2">
+          <span>⚠️</span>
+          <span>{uploadError}</span>
+        </div>
+      )}
+
+      {/* Thumbnail grid */}
+      {images.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+              Photos ajoutées ({images.length})
+            </span>
+            <span className="text-[11px] text-gray-400">La première sera l'image principale</span>
+          </div>
+
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+            {images.map((url, i) => (
+              <div
+                key={url + i}
+                className="relative group aspect-square rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shadow-2xs"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={url}
+                  alt={`Product image ${i + 1}`}
+                  className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                />
+                {i === 0 && (
+                  <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 bg-black/70 backdrop-blur-xs text-white text-[10px] font-medium rounded">
+                    Principale
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleRemove(i)}
+                  className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-sm font-semibold gap-1 backdrop-blur-2xs"
+                  aria-label="Supprimer la photo"
+                >
+                  <span className="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white">
+                    ✕
+                  </span>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

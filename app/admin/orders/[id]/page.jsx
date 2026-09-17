@@ -39,14 +39,14 @@ export default async function OrderDetailPage({ params }) {
   const serializedOrder = JSON.parse(JSON.stringify(order));
 
   return (
-    <div className="min-h-screen bg-gray-50/50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FAFAFA] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Navigation Bar */}
-        <div className="bg-white rounded-xl p-4 shadow-xs border border-gray-200 flex items-center justify-between">
+        <div className="bg-white rounded-xl p-4 shadow-xs border border-gray-200/80 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link
               href="/admin/orders"
-              className="text-xs font-medium text-gray-500 hover:text-gray-900 transition flex items-center gap-1"
+              className="text-xs font-medium text-gray-500 hover:text-[#8B7CD8] transition flex items-center gap-1"
             >
               <span>← All Orders</span>
             </Link>

@@ -24,16 +24,16 @@ export default async function NewCollectionPage() {
   const serialized = JSON.parse(JSON.stringify(products));
 
   return (
-    <div className="min-h-screen bg-gray-50/50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FAFAFA] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-6">
-        <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-white rounded-xl p-5 shadow-xs border border-gray-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Link href="/admin/collections" className="text-xs text-gray-500 hover:text-gray-900 transition">
+              <Link href="/admin/collections" className="text-xs text-gray-500 hover:text-[#8B7CD8] transition">
                 ← Collections
               </Link>
               <span className="text-gray-300">•</span>
-              <span className="text-xs font-semibold text-gray-700">New Collection</span>
+              <span className="text-xs font-semibold text-[#6555B6]">New Collection</span>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Add Collection</h1>
           </div>

@@ -8,13 +8,16 @@ import ProductCard from "./ProductCard";
 
 const CATEGORIES = ["JUPE", "ENSEMBLE", "ROBE", "HIJAB", "PANTALON", "VESTE"];
 
-export default function ShopCatalog({ initialProducts, category }) {
+export default function ShopCatalog({ initialProducts, category, hideSearch = false, onExternalResults }) {
   const t = useTranslations();
   const router = useRouter();
-  const [searchResults, setSearchResults] = useState(null);
+  const [internalResults, setInternalResults] = useState(null);
+
+  // Accept results either from internal SearchBar or from an external one via prop
+  const searchResults = onExternalResults !== undefined ? onExternalResults : internalResults;
 
   const onResults = useCallback((results) => {
-    setSearchResults(results);
+    setInternalResults(results);
   }, []);
 
   const products = useMemo(() => {
@@ -25,12 +28,15 @@ export default function ShopCatalog({ initialProducts, category }) {
 
   return (
     <div className="space-y-6">
-      <SearchBar category={category} onResults={onResults} />
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      {/* SearchBar — hidden when managed externally by the parent page */}
+      {!hideSearch && <SearchBar category={category} onResults={onResults} />}
+
+      {/* Category filter pills — compact, the homepage already has the main category nav */}
+      <div className="flex gap-1.5 overflow-x-auto pb-1">
         <button
           type="button"
           onClick={() => router.push("/produits")}
-          className={`whitespace-nowrap rounded-full px-4 py-2 text-sm ${!category ? "bg-black text-white" : "bg-white border border-neutral-200"}`}
+          className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs transition-colors ${!category ? "bg-[#8B7CD8] text-white shadow-xs" : "bg-white border border-neutral-200 text-neutral-500 hover:border-[#8B7CD8]/50"}`}
         >
           {t("categories.all")}
         </button>
@@ -39,14 +45,15 @@ export default function ShopCatalog({ initialProducts, category }) {
             key={key}
             type="button"
             onClick={() => router.push(`/produits?category=${key}`)}
-            className={`whitespace-nowrap rounded-full px-4 py-2 text-sm ${
-              category === key ? "bg-black text-white" : "bg-white border border-neutral-200"
+            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs transition-colors ${
+              category === key ? "bg-[#8B7CD8] text-white shadow-xs" : "bg-white border border-neutral-200 text-neutral-500 hover:border-[#8B7CD8]/50"
             }`}
           >
             {t(`categories.${key}`)}
           </button>
         ))}
       </div>
+
       {products.length === 0 ? (
         <p className="py-12 text-center text-sm text-neutral-500">{t("common.noResults")}</p>
       ) : (

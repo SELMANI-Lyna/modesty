@@ -9,14 +9,14 @@ function statusLabel(status) {
 
 function statusBadgeClass(status) {
   return status === "in_store"
-    ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+    ? "bg-[#8B7CD8]/10 text-[#6555B6] border-[#8B7CD8]/25"
     : "bg-gray-100 text-gray-700 border-gray-200";
 }
 
 function DeleteModal({ collection, onConfirm, onCancel, isDeleting }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-6 max-w-sm w-full mx-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs">
+      <div className="bg-white rounded-xl shadow-xl border border-gray-200/80 p-6 max-w-sm w-full mx-4">
         <h3 className="text-base font-semibold text-gray-900 mb-1">Delete collection?</h3>
         <p className="text-sm text-gray-600 mb-5">
           <span className="font-medium text-gray-900">"{collection.name}"</span> will be removed from the catalog and its product links will be cleared. This cannot be undone.
@@ -32,7 +32,7 @@ function DeleteModal({ collection, onConfirm, onCancel, isDeleting }) {
           <button
             onClick={onConfirm}
             disabled={isDeleting}
-            className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition disabled:opacity-50 flex items-center gap-2"
+            className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition disabled:opacity-50 flex items-center gap-2 shadow-xs"
           >
             {isDeleting ? "Deleting…" : "Delete"}
           </button>
@@ -95,7 +95,7 @@ export default function CollectionsList({ initialCollections }) {
         />
       )}
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200/80 shadow-xs overflow-hidden">
         <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-gray-100">
           <div className="relative flex-1 max-w-sm">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -106,7 +106,7 @@ export default function CollectionsList({ initialCollections }) {
               placeholder="Search by name or status…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-400 transition"
+              className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
             />
           </div>
           <span className="text-xs text-gray-500 whitespace-nowrap">
@@ -121,14 +121,14 @@ export default function CollectionsList({ initialCollections }) {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
+              <tr className="bg-gray-50/80 border-b border-gray-100">
                 <th className="text-left px-5 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wider whitespace-nowrap">Collection</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wider whitespace-nowrap">Status</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wider whitespace-nowrap">Products</th>
                 <th className="text-right px-5 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wider whitespace-nowrap">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-gray-100">
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="text-center py-12 text-gray-400 text-sm">
@@ -170,7 +170,7 @@ export default function CollectionsList({ initialCollections }) {
                     </td>
 
                     <td className="px-4 py-3.5">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-200 text-xs font-medium">
                         {collection.products?.length ?? 0} product{(collection.products?.length ?? 0) !== 1 ? "s" : ""}
                       </span>
                     </td>
@@ -179,14 +179,14 @@ export default function CollectionsList({ initialCollections }) {
                       <div className="flex items-center gap-2 justify-end">
                         <Link
                           href={`/admin/collections/${collection.id}/edit`}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition border border-gray-200"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 rounded-lg transition border border-gray-200"
                         >
                           Edit
                         </Link>
                         <button
                           type="button"
                           onClick={() => setToDelete(collection)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition border border-red-200"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition border border-red-200"
                         >
                           Delete
                         </button>

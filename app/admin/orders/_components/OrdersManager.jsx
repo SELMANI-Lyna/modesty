@@ -5,40 +5,40 @@ import Link from "next/link";
 
 const STATUS_CONFIG = {
   pending: {
-    label: "Pending",
-    badgeClass: "bg-amber-50 text-amber-800 border-amber-300 ring-amber-500/20",
-    dotClass: "bg-amber-500",
-    description: "New order awaiting confirmation",
+    label: "En attente",
+    badgeClass: "bg-gray-100 text-gray-700 border-gray-200 ring-gray-400/10",
+    dotClass: "bg-gray-400",
+    description: "Nouvelle commande en attente de confirmation",
   },
   confirmed: {
-    label: "Confirmed",
-    badgeClass: "bg-blue-50 text-blue-800 border-blue-300 ring-blue-500/20",
-    dotClass: "bg-blue-500",
-    description: "Confirmed with client",
+    label: "Confirmée",
+    badgeClass: "bg-[#8B7CD8]/10 text-[#5B4CAE] border-[#8B7CD8]/30 ring-[#8B7CD8]/15",
+    dotClass: "bg-[#8B7CD8]",
+    description: "Confirmée avec le client",
   },
   shipped: {
-    label: "Shipped",
-    badgeClass: "bg-indigo-50 text-indigo-800 border-indigo-300 ring-indigo-500/20",
-    dotClass: "bg-indigo-500",
-    description: "In transit with courier",
+    label: "Expédiée",
+    badgeClass: "bg-[#8B7CD8]/20 text-[#4E409D] border-[#8B7CD8]/40 ring-[#8B7CD8]/20",
+    dotClass: "bg-[#8B7CD8]",
+    description: "En cours d'acheminement",
   },
   delivered: {
-    label: "Delivered",
-    badgeClass: "bg-emerald-50 text-emerald-800 border-emerald-300 ring-emerald-500/20",
-    dotClass: "bg-emerald-500",
-    description: "Successfully delivered & paid",
+    label: "Livrée",
+    badgeClass: "bg-[#8B7CD8]/15 text-[#4E409D] border-[#8B7CD8]/30 ring-[#8B7CD8]/15",
+    dotClass: "bg-[#8B7CD8]",
+    description: "Colis livré et payé",
   },
   returned: {
-    label: "Returned",
-    badgeClass: "bg-orange-50 text-orange-800 border-orange-300 ring-orange-500/20",
-    dotClass: "bg-orange-500",
-    description: "Package returned by client/courier",
+    label: "Retournée",
+    badgeClass: "bg-gray-100 text-gray-600 border-gray-200 ring-gray-300/10",
+    dotClass: "bg-gray-400",
+    description: "Colis retourné par le client / livreur",
   },
   cancelled: {
-    label: "Cancelled",
-    badgeClass: "bg-red-50 text-red-800 border-red-300 ring-red-500/20",
-    dotClass: "bg-red-500",
-    description: "Order cancelled before shipment",
+    label: "Annulée",
+    badgeClass: "bg-gray-100 text-gray-500 border-gray-200 ring-gray-300/10",
+    dotClass: "bg-gray-300",
+    description: "Commande annulée",
   },
 };
 
@@ -199,40 +199,40 @@ export default function OrdersManager({ initialOrders = [] }) {
 
       {/* Header with Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-xs">
-          <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Total Orders</span>
+        <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+          <span className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider">Total Commandes</span>
           <div className="text-2xl font-bold text-gray-900 mt-1">{orders.length}</div>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-amber-200 bg-amber-50/30 shadow-xs">
-          <span className="text-xs text-amber-700 font-medium uppercase tracking-wider">Pending Action</span>
-          <div className="text-2xl font-bold text-amber-900 mt-1">{statusCounts.pending || 0}</div>
+        <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+          <span className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider">En attente</span>
+          <div className="text-2xl font-bold text-gray-800 mt-1">{statusCounts.pending || 0}</div>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-blue-200 bg-blue-50/30 shadow-xs">
-          <span className="text-xs text-blue-700 font-medium uppercase tracking-wider">Confirmed</span>
-          <div className="text-2xl font-bold text-blue-900 mt-1">{statusCounts.confirmed || 0}</div>
+        <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+          <span className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider">Confirmées</span>
+          <div className="text-2xl font-bold text-[#6555B6] mt-1">{statusCounts.confirmed || 0}</div>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-emerald-200 bg-emerald-50/30 shadow-xs">
-          <span className="text-xs text-emerald-700 font-medium uppercase tracking-wider">Delivered</span>
-          <div className="text-2xl font-bold text-emerald-900 mt-1">{statusCounts.delivered || 0}</div>
+        <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+          <span className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider">Livrées</span>
+          <div className="text-2xl font-bold text-[#6555B6] mt-1">{statusCounts.delivered || 0}</div>
         </div>
       </div>
 
-      {/* Navigation Tabs by Status */}
-      <div className="bg-white rounded-xl border border-gray-200 p-2 shadow-xs">
-        <div className="flex flex-wrap gap-1.5 border-b border-gray-100 pb-2">
+      {/* Navigation Tabs by Status & Toolbar */}
+      <div className="bg-white rounded-2xl border border-gray-200/80 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-4">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
           <button
             type="button"
             onClick={() => setStatusFilter("all")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 whitespace-nowrap ${
               statusFilter === "all"
-                ? "bg-black text-white shadow-xs"
-                : "text-gray-600 hover:bg-gray-100"
+                ? "bg-[#8B7CD8] text-white shadow-xs"
+                : "text-gray-600 hover:bg-gray-100/80 bg-gray-50/70"
             }`}
           >
-            All Orders
+            Toutes les commandes
             <span
-              className={`px-1.5 py-0.2 rounded-full text-[10px] ${
-                statusFilter === "all" ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-700"
+              className={`px-1.5 py-0.2 rounded-full text-[10px] font-semibold ${
+                statusFilter === "all" ? "bg-white/20 text-white" : "bg-gray-200 text-gray-700"
               }`}
             >
               {statusCounts.all}
@@ -248,19 +248,19 @@ export default function OrdersManager({ initialOrders = [] }) {
                 key={statusKey}
                 type="button"
                 onClick={() => setStatusFilter(statusKey)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 whitespace-nowrap ${
                   isActive
-                    ? "bg-black text-white shadow-xs"
-                    : "text-gray-600 hover:bg-gray-100"
+                    ? "bg-[#8B7CD8] text-white shadow-xs"
+                    : "text-gray-600 hover:bg-gray-100/80 bg-gray-50/70"
                 }`}
               >
                 <span
-                  className={`w-1.5 h-1.5 rounded-full ${config.dotClass}`}
+                  className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-white" : config.dotClass}`}
                 />
                 {config.label}
                 <span
-                  className={`px-1.5 py-0.2 rounded-full text-[10px] ${
-                    isActive ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-700"
+                  className={`px-1.5 py-0.2 rounded-full text-[10px] font-semibold ${
+                    isActive ? "bg-white/20 text-white" : "bg-gray-200 text-gray-700"
                   }`}
                 >
                   {count}
@@ -271,14 +271,14 @@ export default function OrdersManager({ initialOrders = [] }) {
         </div>
 
         {/* Search and Secondary Filters Bar */}
-        <div className="pt-3 flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <div className="pt-2 flex flex-col sm:flex-row gap-3 items-center justify-between border-t border-gray-100">
           <div className="relative w-full sm:w-80">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by client, phone, wilaya, order #..."
-              className="w-full pl-9 pr-8 py-2 text-xs rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black focus:border-black bg-gray-50/50"
+              placeholder="Rechercher par client, tél, wilaya, N°..."
+              className="w-full pl-9 pr-8 py-2 text-xs rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] bg-white text-gray-900 placeholder-gray-400 transition"
             />
             <svg
               className="absolute left-2.5 top-2.5 w-4 h-4 text-gray-400"
@@ -305,33 +305,33 @@ export default function OrdersManager({ initialOrders = [] }) {
 
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <label className="text-xs text-gray-500 font-medium whitespace-nowrap">
-              Delivery:
+              Livraison :
             </label>
             <select
               value={deliveryFilter}
               onChange={(e) => setDeliveryFilter(e.target.value)}
-              className="text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-black"
+              className="text-xs border border-gray-200 rounded-lg px-2.5 py-2 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/20 focus:border-[#8B7CD8] transition"
             >
-              <option value="all">All types</option>
-              <option value="home">Home delivery</option>
-              <option value="agency">Agency pickup</option>
+              <option value="all">Tous les modes</option>
+              <option value="home">À domicile</option>
+              <option value="agency">En agence</option>
             </select>
           </div>
         </div>
       </div>
 
       {/* Orders List Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-xs">
+      <div className="bg-white rounded-2xl border border-gray-200/80 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
         {filteredOrders.length === 0 ? (
           <div className="p-12 text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 text-gray-400 mb-3">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 text-gray-400 mb-3 text-lg">
               📦
             </div>
-            <h3 className="text-base font-semibold text-gray-900">No orders found</h3>
+            <h3 className="text-base font-semibold text-gray-900">Aucune commande trouvée</h3>
             <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
               {searchQuery || statusFilter !== "all" || deliveryFilter !== "all"
-                ? "Try clearing filters or search terms to view all orders."
-                : "No customer orders have been received yet."}
+                ? "Essayez de réinitialiser vos filtres ou termes de recherche."
+                : "Aucune commande client reçue pour le moment."}
             </p>
             {(searchQuery || statusFilter !== "all" || deliveryFilter !== "all") && (
               <button
@@ -340,9 +340,9 @@ export default function OrdersManager({ initialOrders = [] }) {
                   setDeliveryFilter("all");
                   setSearchQuery("");
                 }}
-                className="mt-4 px-3 py-1.5 text-xs font-medium text-black bg-gray-100 hover:bg-gray-200 rounded-lg transition"
+                className="mt-4 px-3.5 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg transition"
               >
-                Reset filters
+                Réinitialiser les filtres
               </button>
             )}
           </div>
@@ -435,7 +435,7 @@ export default function OrdersManager({ initialOrders = [] }) {
                             <div className="flex items-center gap-1 mt-0.5">
                               <a
                                 href={`tel:${order.phone}`}
-                                className="text-[11px] text-blue-600 hover:underline font-mono"
+                                className="text-[11px] text-[#8B7CD8] hover:underline font-mono"
                               >
                                 {order.phone}
                               </a>
@@ -455,11 +455,11 @@ export default function OrdersManager({ initialOrders = [] }) {
                           {/* Delivery Type Badge */}
                           <div className="w-28 pr-3">
                             {order.deliveryType === "home" ? (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-purple-50 text-purple-700 border border-purple-200">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#8B7CD8]/10 text-[#6555B6] border border-[#8B7CD8]/25">
                                 🏠 Home
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-700 border border-gray-200">
                                 🏢 Agency
                               </span>
                             )}
@@ -486,7 +486,7 @@ export default function OrdersManager({ initialOrders = [] }) {
                                 value={order.status}
                                 onChange={(e) => handleStatusChange(order.id, e.target.value)}
                                 disabled={isUpdating}
-                                className={`w-full text-xs font-semibold py-1.5 pl-2.5 pr-6 rounded-lg border focus:outline-none focus:ring-2 appearance-none cursor-pointer transition ${statusInfo.badgeClass} ${
+                                className={`w-full text-xs font-semibold py-1.5 pl-2.5 pr-6 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#8B7CD8]/30 appearance-none cursor-pointer transition ${statusInfo.badgeClass} ${
                                   isUpdating ? "opacity-50 cursor-wait" : ""
                                 }`}
                               >
@@ -531,7 +531,7 @@ export default function OrdersManager({ initialOrders = [] }) {
 
                         {/* Inline Expandable Order Detail (Requirement #2) */}
                         {isExpanded && (
-                          <div className="bg-gray-50 border-t border-b border-gray-200 p-5 pl-14 transition-all">
+                          <div className="bg-gray-50/50 border-t border-b border-gray-200/80 p-5 pl-14 transition-all">
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                               {/* Left 2 Cols: Order Items list */}
                               <div className="lg:col-span-2 space-y-3">
@@ -544,7 +544,7 @@ export default function OrdersManager({ initialOrders = [] }) {
                                   </span>
                                 </div>
 
-                                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-xs">
+                                <div className="bg-white rounded-lg border border-gray-200/80 overflow-hidden shadow-xs">
                                   <table className="w-full text-left border-collapse text-xs">
                                     <thead>
                                       <tr className="bg-gray-50/80 border-b border-gray-200 text-[10px] font-semibold text-gray-500 uppercase">
@@ -570,7 +570,7 @@ export default function OrdersManager({ initialOrders = [] }) {
                                             {/* Product Image & Name */}
                                             <td className="py-3 px-3">
                                               <div className="flex items-center gap-3">
-                                                <div className="w-12 h-12 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center">
+                                                <div className="w-12 h-12 rounded-lg bg-gray-100 border border-gray-200/80 overflow-hidden shrink-0 flex items-center justify-center">
                                                   {imageSrc ? (
                                                     // eslint-disable-next-line @next/next/no-img-element
                                                     <img
@@ -660,7 +660,7 @@ export default function OrdersManager({ initialOrders = [] }) {
                                   Delivery & Customer Details
                                 </h4>
 
-                                <div className="bg-white rounded-lg border border-gray-200 p-4 space-y-3 shadow-xs text-xs">
+                                <div className="bg-white rounded-lg border border-gray-200/80 p-4 space-y-3 shadow-xs text-xs">
                                   <div>
                                     <span className="text-[10px] uppercase font-semibold text-gray-400 block">
                                       Customer Name
@@ -677,7 +677,7 @@ export default function OrdersManager({ initialOrders = [] }) {
                                     <div className="flex items-center gap-2 mt-0.5">
                                       <a
                                         href={`tel:${order.phone}`}
-                                        className="font-mono text-blue-600 hover:underline font-medium"
+                                        className="font-mono text-[#8B7CD8] hover:underline font-medium"
                                       >
                                         {order.phone}
                                       </a>
@@ -712,11 +712,11 @@ export default function OrdersManager({ initialOrders = [] }) {
                                     </span>
                                     <div className="mt-1">
                                       {order.deliveryType === "home" ? (
-                                        <div className="text-purple-700 bg-purple-50 px-2.5 py-1.5 rounded border border-purple-200 font-medium">
+                                        <div className="text-[#6555B6] bg-[#8B7CD8]/10 px-2.5 py-1.5 rounded border border-[#8B7CD8]/25 font-medium">
                                           🏠 Home Delivery (Livraison à domicile)
                                         </div>
                                       ) : (
-                                        <div className="text-amber-700 bg-amber-50 px-2.5 py-1.5 rounded border border-amber-200 font-medium">
+                                        <div className="text-gray-700 bg-gray-50 px-2.5 py-1.5 rounded border border-gray-200 font-medium">
                                           🏢 Stop Desk / Agency Pickup (Bureau)
                                         </div>
                                       )}
@@ -737,8 +737,8 @@ export default function OrdersManager({ initialOrders = [] }) {
                                           disabled={order.status === st || isUpdating}
                                           className={`py-1 px-1.5 rounded text-[10px] font-medium border text-center transition ${
                                             order.status === st
-                                              ? "bg-black text-white border-black"
-                                              : "bg-gray-50 text-gray-700 hover:bg-gray-100 border-gray-200"
+                                              ? "bg-[#8B7CD8] text-white border-[#8B7CD8] shadow-xs"
+                                              : "bg-gray-50 text-gray-700 hover:bg-[#8B7CD8]/10 hover:text-[#6555B6] border-gray-200"
                                           }`}
                                         >
                                           {STATUS_CONFIG[st].label}

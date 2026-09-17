@@ -17,6 +17,11 @@ export default function ProductCard({ product }) {
         return acc;
       }, []);
   const soldOut = !(product.variants || []).some((v) => v.isActive && v.quantity > 0);
+  const discountPercent =
+    product.isOnSale && product.salePrice != null && Number(product.price) > 0
+      ? Math.round(((product.price - product.salePrice) / product.price) * 100)
+      : 0;
+  const showDiscount = discountPercent > 0;
 
   return (
     <Link href={`/produits/${product.id}`} className="group block">
@@ -30,8 +35,13 @@ export default function ProductCard({ product }) {
         ) : (
           <div className="flex h-full items-center justify-center text-neutral-400 text-sm">—</div>
         )}
-        {promoActive && (
-          <span className="absolute top-3 start-3 rounded-full bg-black px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-white">
+        {showDiscount && (
+          <span className="absolute top-3 start-3 rounded-full bg-[#8B7CD8] px-2.5 py-1 text-[10px] font-semibold tracking-wide text-white">
+            {t("common.discount", { percent: discountPercent })}
+          </span>
+        )}
+        {promoActive && !showDiscount && (
+          <span className="absolute top-3 start-3 rounded-full bg-[#8B7CD8] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-white">
             {t("nav.promotions")}
           </span>
         )}

@@ -17,7 +17,8 @@
     "from": "ابتداءً من",
     "da": "دج",
     "viewAll": "عرض الكل",
-    "loading": "جاري التحميل…"
+    "loading": "جاري التحميل…",
+    "discount": "-{percent}٪"
   },
   "categories": {
     "all": "الكل",
@@ -32,10 +33,20 @@
     "heroTitle": "أناقة لكل يوم",
     "heroSubtitle": "اكتشفي قطعنا واطلبي بسهولة من هاتفك.",
     "shopCta": "تصفح المنتجات",
+    "browseCategories": "تصفحي حسب التصنيف",
     "promosTitle": "عروض جارية",
     "bestTitle": "الأكثر مبيعاً",
     "reviewsTitle": "آراء الزبونات",
+    "reviewsHeading": "ماذا تقول عميلاتنا",
     "photosTitle": "صور الزبونات",
+    "trustShippingTitle": "شحن سريع",
+    "trustShippingText": "نوصّل طلباتك أينما كنتِ في الجزائر",
+    "trustPaymentTitle": "دفع آمن ومرن",
+    "trustPaymentText": "الدفع عند الاستلام أو عبر CCP",
+    "trustOrdersTitle": "+1000 تجربة ناجحة",
+    "trustOrdersText": "انضمي إلى العائلة",
+    "trustSatisfactionTitle": "رضاكِ يهمنا",
+    "trustSatisfactionText": "إمكانية التبديل حسب سياسة المتجر",
     "guideTitle": "كيف تطلبين",
     "guide1Title": "تصفحي",
     "guide1Text": "استكشفي المنتجات أو المجموعات وافتحي القطعة التي تعجبك.",
@@ -58,7 +69,8 @@
     "order": "اطلبي",
     "ordering": "جاري الإرسال…",
     "orderSuccess": "تم إرسال الطلب. شكراً، سنتواصل معك قريباً.",
-    "selectVariant": "اختاري لوناً ومقاساً متوفرين."
+    "selectVariant": "اختاري لوناً ومقاساً متوفرين.",
+    "lowStock": "متبقي {quantity} قطعة فقط"
   },
   "order": {
     "title": "معلوماتك",
