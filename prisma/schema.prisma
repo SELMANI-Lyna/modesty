@@ -31,7 +31,7 @@ model Color {
   name      String
   hex       String
   productId String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Variant {
@@ -48,7 +48,7 @@ model Variant {
   productId         String
   lowStockAlertSent Boolean     @default(false)
   orderItems        OrderItem[]
-  product           Product     @relation(fields: [productId], references: [id])
+  product           Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([productId, sku])
 }
@@ -86,7 +86,7 @@ model Feedback {
   createdAt  DateTime @default(now())
   productId  String?
   storyLink  String?
-  product    Product? @relation(fields: [productId], references: [id])
+  product    Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
 }
 
 model SearchLog {

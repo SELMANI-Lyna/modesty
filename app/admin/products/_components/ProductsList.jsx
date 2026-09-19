@@ -104,20 +104,58 @@ function StockBadge({ variants }) {
   );
 }
 
-function DeleteModal({ product, onConfirm, onCancel, isDeleting }) {
+function DeleteModal({
+  product,
+  onConfirm,
+  onCancel,
+  isDeleting,
+  error,
+  ordersWarning,
+  forceChecked,
+  setForceChecked,
+}) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-fadeIn">
-      <div className="bg-white rounded-2xl shadow-xl border border-gray-200/80 p-6 max-w-sm w-full">
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-200/80 p-6 max-w-md w-full">
         <div className="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center mb-4">
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </div>
         <h3 className="text-base font-semibold text-gray-900 mb-1.5">Supprimer ce produit ?</h3>
-        <p className="text-xs text-gray-600 mb-6 leading-relaxed">
+        <p className="text-xs text-gray-600 mb-4 leading-relaxed">
           Le produit <span className="font-semibold text-gray-900">« {product.name} »</span> sera définitivement
           supprimé ainsi que toutes ses déclinaisons et photos associées.
         </p>
+
+        {ordersWarning && (
+          <div className="mb-4 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 space-y-2.5">
+            <div className="flex items-start gap-2">
+              <span className="text-base leading-none">⚠️</span>
+              <p className="leading-snug">
+                Ce produit figure dans <span className="font-bold">{ordersWarning.orderCount}</span> ligne(s) de commande(s) existante(s).
+              </p>
+            </div>
+            <label className="flex items-start gap-2 cursor-pointer pt-1 border-t border-amber-200/60">
+              <input
+                type="checkbox"
+                checked={forceChecked}
+                onChange={(e) => setForceChecked(e.target.checked)}
+                className="mt-0.5 rounded border-amber-300 text-[#8B7CD8] focus:ring-[#8B7CD8]"
+              />
+              <span className="text-[11px] font-medium text-amber-900 leading-tight select-none">
+                Confirmer la suppression forcée (supprime également les lignes associées dans l&apos;historique des commandes)
+              </span>
+            </label>
+          </div>
+        )}
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 leading-snug">
+            {error}
+          </div>
+        )}
+
         <div className="flex items-center gap-2.5 justify-end">
           <button
             type="button"
@@ -129,11 +167,15 @@ function DeleteModal({ product, onConfirm, onCancel, isDeleting }) {
           </button>
           <button
             type="button"
-            onClick={onConfirm}
-            disabled={isDeleting}
+            onClick={() => onConfirm(ordersWarning ? forceChecked : false)}
+            disabled={isDeleting || (ordersWarning && !forceChecked)}
             className="px-4 py-2 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition disabled:opacity-50 flex items-center gap-1.5 shadow-xs"
           >
-            {isDeleting ? "Suppression…" : "Confirmer la suppression"}
+            {isDeleting
+              ? "Suppression…"
+              : ordersWarning
+              ? "Forcer la suppression"
+              : "Confirmer la suppression"}
           </button>
         </div>
       </div>
@@ -149,27 +191,50 @@ export default function ProductsList({ initialProducts }) {
   const [toDelete, setToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
+  const [ordersWarning, setOrdersWarning] = useState(null);
+  const [forceChecked, setForceChecked] = useState(false);
 
   const filtered = products.filter((p) => {
     const q = search.toLowerCase();
     return p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
   });
 
-  async function handleDeleteConfirm() {
+  async function handleDeleteConfirm(force = false) {
     if (!toDelete) return;
     setIsDeleting(true);
     setDeleteError("");
     try {
-      const res = await fetch(`/api/admin/products/${toDelete.id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed");
+      const url = `/api/admin/products/${toDelete.id}${force ? "?force=true" : ""}`;
+      const res = await fetch(url, { method: "DELETE" });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.status === 409 && data.hasOrders) {
+        setOrdersWarning(data);
+        setIsDeleting(false);
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(data.error || "Impossible de supprimer le produit.");
+      }
+
       setProducts((prev) => prev.filter((p) => p.id !== toDelete.id));
       setToDelete(null);
-    } catch {
-      setDeleteError("Could not delete the product. Please try again.");
+      setOrdersWarning(null);
+      setForceChecked(false);
+    } catch (err) {
+      setDeleteError(err.message || "Impossible de supprimer le produit. Veuillez réessayer.");
     } finally {
       setIsDeleting(false);
     }
   }
+
+  const handleCloseModal = () => {
+    setToDelete(null);
+    setDeleteError("");
+    setOrdersWarning(null);
+    setForceChecked(false);
+  };
 
   return (
     <>
@@ -177,8 +242,12 @@ export default function ProductsList({ initialProducts }) {
         <DeleteModal
           product={toDelete}
           onConfirm={handleDeleteConfirm}
-          onCancel={() => { setToDelete(null); setDeleteError(""); }}
+          onCancel={handleCloseModal}
           isDeleting={isDeleting}
+          error={deleteError}
+          ordersWarning={ordersWarning}
+          forceChecked={forceChecked}
+          setForceChecked={setForceChecked}
         />
       )}
 
@@ -202,7 +271,7 @@ export default function ProductsList({ initialProducts }) {
           </span>
         </div>
 
-        {deleteError && (
+        {!toDelete && deleteError && (
           <div className="px-5 py-3 bg-red-50 border-b border-red-100 text-xs text-red-700">
             {deleteError}
           </div>

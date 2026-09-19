@@ -208,16 +208,76 @@ export async function DELETE(req, { params }) {
   }
 
   const { id } = await params;
+  const { searchParams } = new URL(req.url);
+  const force = searchParams.get("force") === "true";
 
   try {
-    await prisma.product.delete({ where: { id } });
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    if (err.code === "P2025") {
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        variants: {
+          include: {
+            orderItems: { select: { id: true, orderId: true } },
+          },
+        },
+      },
+    });
+
+    if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
+
+    const allOrderItems = product.variants.flatMap((v) => v.orderItems);
+
+    if (allOrderItems.length > 0 && !force) {
+      return NextResponse.json(
+        {
+          error: `Ce produit est associé à ${allOrderItems.length} ligne(s) de commande existante(s).`,
+          hasOrders: true,
+          orderCount: allOrderItems.length,
+        },
+        { status: 409 }
+      );
+    }
+
+    await prisma.$transaction(async (tx) => {
+      // If force delete is requested and there are order items, remove those order items first
+      if (allOrderItems.length > 0) {
+        const orderItemIds = allOrderItems.map((oi) => oi.id);
+        await tx.orderItem.deleteMany({
+          where: { id: { in: orderItemIds } },
+        });
+      }
+
+      // Delete variants
+      await tx.variant.deleteMany({
+        where: { productId: id },
+      });
+
+      // Delete colors
+      await tx.color.deleteMany({
+        where: { productId: id },
+      });
+
+      // Unlink feedbacks
+      await tx.feedback.updateMany({
+        where: { productId: id },
+        data: { productId: null },
+      });
+
+      // Delete product
+      await tx.product.delete({
+        where: { id },
+      });
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
     console.error("[DELETE /api/admin/products/:id] error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: err.message || "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
