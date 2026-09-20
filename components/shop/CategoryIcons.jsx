@@ -62,6 +62,22 @@ export function CategoryIcon({ name }) {
           <path d="M24 10c2 4 12 4 16 0" />
         </svg>
       );
+    case "SCARF":
+      return (
+        <svg {...ICON} aria-hidden="true">
+          <path d="M18 16c6-4 22-4 28 0 4 3 6 8 4 14-2 6-8 10-18 10h-6c-6 0-10 4-10 10v4h8v-4c0-3 2-6 6-6h8c12 0 20-6 22-14 1-5 0-11-4-15" />
+          <path d="M22 28v26h8V28" />
+          <path d="M22 50h8" />
+        </svg>
+      );
+    case "ABAYA":
+      return (
+        <svg {...ICON} aria-hidden="true">
+          <path d="M26 10h12" />
+          <path d="M28 10l-6 8-10 12 4 4 8-10v30h16V24l8 10 4-4-10-12-6-8" />
+          <path d="M32 10v44" />
+        </svg>
+      );
     default:
       return null;
   }

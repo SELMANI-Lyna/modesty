@@ -27,7 +27,7 @@ export async function GET(req, { params }) {
 
 // ─── Shared validation ───────────────────────────────────────────────────────
 
-const CATEGORIES = ["JUPE", "ENSEMBLE", "ROBE", "HIJAB", "PANTALON", "VESTE"];
+const CATEGORIES = ["JUPE", "ENSEMBLE", "ROBE", "HIJAB", "PANTALON", "VESTE", "SCARF", "ABAYA"];
 
 function normalizeCategory(category) {
   const raw = String(category || "").trim().toUpperCase();

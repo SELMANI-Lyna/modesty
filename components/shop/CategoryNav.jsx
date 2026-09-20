@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { CategoryIcon } from "./CategoryIcons";
 
-const CATEGORY_KEYS = ["VESTE", "ENSEMBLE", "ROBE", "JUPE", "HIJAB", "PANTALON"];
+const CATEGORY_KEYS = ["VESTE", "ENSEMBLE", "ROBE", "JUPE", "HIJAB", "PANTALON", "SCARF", "ABAYA"];
 
 export default async function CategoryNav() {
   const t = await getTranslations("categories");
@@ -22,7 +22,7 @@ export default async function CategoryNav() {
           {common("viewAll")}
         </Link>
       </div>
-      <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-2 sm:grid sm:grid-cols-3 sm:overflow-visible lg:grid-cols-6">
+      <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-2 sm:grid sm:grid-cols-4 sm:overflow-visible lg:grid-cols-4 xl:grid-cols-8">
         {CATEGORY_KEYS.map((key) => (
           <Link
             key={key}

@@ -27,7 +27,9 @@
     "ROBE": "Robe",
     "HIJAB": "Hijab",
     "PANTALON": "Pantalon",
-    "VESTE": "Veste"
+    "VESTE": "Veste",
+    "SCARF": "Scarf",
+    "ABAYA": "Abaya"
   },
   "home": {
     "heroTitle": "Élégance au quotidien",

@@ -27,7 +27,9 @@
     "ROBE": "فستان",
     "HIJAB": "حجاب",
     "PANTALON": "بنطلون",
-    "VESTE": "سترة"
+    "VESTE": "سترة",
+    "SCARF": "خمارات",
+    "ABAYA": "عبايا"
   },
   "home": {
     "heroTitle": "أناقة لكل يوم",

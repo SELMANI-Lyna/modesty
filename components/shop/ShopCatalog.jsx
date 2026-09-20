@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import SearchBar from "./SearchBar";
 import ProductCard from "./ProductCard";
 
-const CATEGORIES = ["JUPE", "ENSEMBLE", "ROBE", "HIJAB", "PANTALON", "VESTE"];
+const CATEGORIES = ["JUPE", "ENSEMBLE", "ROBE", "HIJAB", "PANTALON", "VESTE", "SCARF", "ABAYA"];
 
 export default function ShopCatalog({ initialProducts, category, hideSearch = false, onExternalResults }) {
   const t = useTranslations();

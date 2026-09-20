@@ -82,6 +82,8 @@ export default function ProductForm({ initial = null, onSaved = () => {} }) {
     { value: "HIJAB", label: "Hijab" },
     { value: "PANTALON", label: "Pantalon" },
     { value: "VESTE", label: "Veste" },
+    { value: "SCARF", label: "Scarf / Foulard (خمارات)" },
+    { value: "ABAYA", label: "Abaya (عبايا)" },
   ];
 
   const [category, setCategory] = useState(initial?.category || "JUPE");
