@@ -80,6 +80,8 @@ export default function OrdersManager({ initialOrders = [] }) {
   const [updatingId, setUpdatingId] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
   const [copyFeedback, setCopyFeedback] = useState(null);
+  const [orderToDelete, setOrderToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const showToast = (message, type = "success") => {
     setToastMessage({ message, type });
@@ -145,6 +147,33 @@ export default function OrdersManager({ initialOrders = [] }) {
     }
   };
 
+  // Delete order handler
+  const handleDeleteOrder = async () => {
+    if (!orderToDelete) return;
+    const targetId = orderToDelete.id;
+    setIsDeleting(true);
+
+    try {
+      const res = await fetch(`/api/admin/orders/${targetId}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Échec de la suppression de la commande");
+      }
+
+      setOrders((prev) => prev.filter((o) => o.id !== targetId));
+      showToast(`Commande #${targetId.slice(-6)} supprimée`, "success");
+      setOrderToDelete(null);
+    } catch (err) {
+      console.error("Delete order error:", err);
+      showToast(err.message || "Erreur lors de la suppression de la commande", "error");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   // Status counts for tabs
   const statusCounts = useMemo(() => {
     const counts = { all: orders.length };
@@ -194,6 +223,44 @@ export default function OrdersManager({ initialOrders = [] }) {
           }`}
         >
           {toastMessage.type === "error" ? "⚠️" : "✓"} {toastMessage.message}
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {orderToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-200/80 p-6 max-w-md w-full animate-in fade-in zoom-in-95 duration-150">
+            <div className="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center mb-4">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </div>
+            <h3 className="text-base font-bold text-gray-900 mb-1">
+              Supprimer la commande #{orderToDelete.id.slice(-6)} ?
+            </h3>
+            <p className="text-xs text-gray-500 mb-4">
+              Cette action supprimera définitivement la commande de{" "}
+              <strong className="text-gray-700">{orderToDelete.clientName}</strong> ({formatPrice(orderToDelete.totalPrice)}). Cette action est irréversible.
+            </p>
+            <div className="flex items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => setOrderToDelete(null)}
+                disabled={isDeleting}
+                className="px-4 py-2 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition disabled:opacity-50"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteOrder}
+                disabled={isDeleting}
+                className="px-4 py-2 text-xs font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg transition shadow-xs disabled:opacity-50 flex items-center gap-1.5"
+              >
+                {isDeleting ? "Suppression…" : "Supprimer"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -526,6 +593,17 @@ export default function OrdersManager({ initialOrders = [] }) {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                               </svg>
                             </Link>
+
+                            <button
+                              type="button"
+                              onClick={() => setOrderToDelete(order)}
+                              className="p-1.5 text-gray-400 hover:text-red-600 rounded hover:bg-red-50 transition"
+                              title="Supprimer la commande"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
                           </div>
                         </div>
 
@@ -759,6 +837,19 @@ export default function OrdersManager({ initialOrders = [] }) {
                                       <span className="text-[10px] bg-gray-200 text-gray-500 px-1.5 py-0.2 rounded">
                                         Coming soon
                                       </span>
+                                    </button>
+                                  </div>
+
+                                  <div className="pt-2">
+                                    <button
+                                      type="button"
+                                      onClick={() => setOrderToDelete(order)}
+                                      className="w-full py-2 px-3 text-xs font-semibold rounded-lg text-red-600 bg-red-50 hover:bg-red-100 border border-red-200/80 transition flex items-center justify-center gap-1.5"
+                                    >
+                                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                      </svg>
+                                      <span>Supprimer cette commande</span>
                                     </button>
                                   </div>
                                 </div>

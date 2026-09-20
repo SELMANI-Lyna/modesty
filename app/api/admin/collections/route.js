@@ -54,7 +54,7 @@ export async function POST(req) {
     return NextResponse.json({ errors }, { status: 422 });
   }
 
-  const { name, image, status = "not_in_store", productIds = [] } = body;
+  const { name, image, status = "in_store", productIds = [] } = body;
   const ids = Array.isArray(productIds) ? productIds.filter(Boolean) : [];
 
   try {

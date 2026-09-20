@@ -40,8 +40,8 @@ async function uploadFileToCloudinary(file, folder = "shop-collections") {
 }
 
 const STATUS_OPTIONS = [
-  { value: "in_store", label: "In Store" },
-  { value: "not_in_store", label: "Not In Store" },
+  { value: "in_store", label: "En boutique / In Store (Visible aux clients)" },
+  { value: "not_in_store", label: "Masqué / Not In Store (Non visible)" },
 ];
 
 export default function CollectionForm({ initialCollection = null, products = [] }) {
@@ -50,7 +50,7 @@ export default function CollectionForm({ initialCollection = null, products = []
 
   const [name, setName] = useState(initialCollection?.name || "");
   const [image, setImage] = useState(initialCollection?.image || "");
-  const [status, setStatus] = useState(initialCollection?.status || "not_in_store");
+  const [status, setStatus] = useState(initialCollection?.status || "in_store");
   const [selectedProductIds, setSelectedProductIds] = useState(
     initialCollection?.products?.map((product) => product.id) || []
   );

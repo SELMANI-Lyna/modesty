@@ -71,6 +71,27 @@ export default function OrderDetailClient({ initialOrder }) {
   const [order, setOrder] = useState(initialOrder);
   const [updating, setUpdating] = useState(false);
   const [message, setMessage] = useState(null);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteOrder = async () => {
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${order.id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to delete order");
+      }
+      router.push("/admin/orders");
+    } catch (err) {
+      console.error(err);
+      setMessage({ text: err.message || "Failed to delete order", type: "error" });
+      setIsDeleting(false);
+      setIsConfirmDeleteOpen(false);
+    }
+  };
 
   const handleStatusChange = async (newStatus) => {
     if (order.status === newStatus || updating) return;
@@ -171,7 +192,7 @@ export default function OrderDetailClient({ initialOrder }) {
           </div>
 
           {/* PLACEHOLDER: Create shipment button (Requirement #5) */}
-          <div className="sm:self-end">
+          <div className="sm:self-end flex items-center gap-2">
             <button
               type="button"
               disabled
@@ -183,9 +204,58 @@ export default function OrderDetailClient({ initialOrder }) {
                 Coming soon
               </span>
             </button>
+
+            <button
+              type="button"
+              onClick={() => setIsConfirmDeleteOpen(true)}
+              className="py-2 px-3 rounded-lg text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200/80 transition flex items-center gap-1.5"
+              title="Supprimer la commande"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span>Supprimer</span>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {isConfirmDeleteOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-200/80 p-6 max-w-md w-full animate-in fade-in zoom-in-95 duration-150">
+            <div className="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center mb-4">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </div>
+            <h3 className="text-base font-bold text-gray-900 mb-1">
+              Supprimer cette commande ?
+            </h3>
+            <p className="text-xs text-gray-500 mb-4">
+              Cette action supprimera définitivement la commande #{order.id.slice(-8).toUpperCase()} de <strong className="text-gray-700">{order.clientName}</strong> ({formatPrice(order.totalPrice)}). Cette action est irréversible.
+            </p>
+            <div className="flex items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => setIsConfirmDeleteOpen(false)}
+                disabled={isDeleting}
+                className="px-4 py-2 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition disabled:opacity-50"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteOrder}
+                disabled={isDeleting}
+                className="px-4 py-2 text-xs font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg transition shadow-xs disabled:opacity-50 flex items-center gap-1.5"
+              >
+                {isDeleting ? "Suppression…" : "Supprimer"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

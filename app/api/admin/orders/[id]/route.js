@@ -179,3 +179,42 @@ export async function PATCH(req, { params }) {
 export async function PUT(req, ctx) {
   return PATCH(req, ctx);
 }
+
+// DELETE /api/admin/orders/[id]
+export async function DELETE(req, { params }) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  try {
+    const existing = await prisma.order.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.orderItem.deleteMany({
+        where: { orderId: id },
+      });
+
+      await tx.order.delete({
+        where: { id },
+      });
+    });
+
+    console.log(`[DELETE /api/admin/orders/${id}] Order deleted successfully`);
+    return NextResponse.json({ success: true, message: "Order deleted successfully" });
+  } catch (error) {
+    console.error(`[DELETE /api/admin/orders/${id}] Error:`, error);
+    return NextResponse.json(
+      { error: "Failed to delete order" },
+      { status: 500 }
+    );
+  }
+}
