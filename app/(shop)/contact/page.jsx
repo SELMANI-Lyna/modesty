@@ -2,8 +2,9 @@ import { getTranslations } from "next-intl/server";
 
 export const dynamic = "force-dynamic";
 
-const INSTAGRAM_URL = "https://instagram.com/hajoubi";
-const CONTACT_EMAIL = "contact@hajoubi.dz";
+const INSTAGRAM_URL = "https://www.instagram.com/hajoubi_modesty/";
+const CONTACT_EMAIL = "lynaselmani16@gmail.com";
+const DEVELOPER_URL = "https://github.com/SELMANI-Lyna";
 
 export default async function ContactPage() {
   const t = await getTranslations("contact");
@@ -15,19 +16,25 @@ export default async function ContactPage() {
         <div>
           <p className="text-xs uppercase tracking-wide text-neutral-400">{t("instagram")}</p>
           <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block font-medium underline">
-            @hajoubi
+            @hajoubi_modesty
           </a>
         </div>
         <div>
           <p className="text-xs uppercase tracking-wide text-neutral-400">{t("email")}</p>
-          <a href={`mailto:${CONTACT_EMAIL}`} className="mt-1 inline-block font-medium">
+          <a href={`mailto:${CONTACT_EMAIL}`} className="mt-1 inline-block font-medium underline">
             {CONTACT_EMAIL}
           </a>
         </div>
         <div className="border-t border-neutral-100 pt-4">
           <p className="text-xs uppercase tracking-wide text-neutral-400">{t("developer")}</p>
-          <p className="mt-1 font-medium">{t("developerName")}</p>
-          <p className="text-sm text-neutral-600">{t("developerContact")}</p>
+          <a
+            href={DEVELOPER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1 inline-block font-medium underline text-neutral-900 hover:text-[#8B7CD8] transition-colors break-all"
+          >
+            {DEVELOPER_URL}
+          </a>
         </div>
       </div>
     </div>
